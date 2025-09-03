@@ -278,7 +278,7 @@ function getProgramDistribution(schoolId: number | null): { programId: string; n
   return rows.map(r => ({ ...r, hours: +(r.minutes / 60).toFixed(1) }));
 }
 
-function getSubjectsSummary({ schoolId, classroomId }: { schoolId?: number; classroomId?: number }): any[] {
+function getSubjectsSummary({ schoolId, classroomId }: { schoolId?: number; classroomId?: number }): { subjectId: number; subject: string; program?: string; minutes: number; hours: number; avgScore: number; attempts: number }[] {
   // เวลาเรียนรวม + คะแนนเฉลี่ยต่อวิชา
   return SUBJECTS.map(subj => {
     const logs = DATA.usageLogs.filter(u => (
@@ -302,7 +302,7 @@ function getSubjectsSummary({ schoolId, classroomId }: { schoolId?: number; clas
   }).sort((a,b) => b.minutes - a.minutes);
 }
 
-function getClassroomsSummary(schoolId: number): any[] {
+function getClassroomsSummary(schoolId: number): { classroomId: number; name: string; students: number; minutes: number; hours: number; avgScore: number }[] {
   const school = SCHOOL_DEFS.find(s => s.id === schoolId);
   if (!school) return [];
   return school.classrooms.map(c => {
@@ -320,7 +320,7 @@ function getClassroomsSummary(schoolId: number): any[] {
   }).sort((a,b) => b.minutes - a.minutes);
 }
 
-function getStudentsTable({ schoolId, classroomId, search }: { schoolId?: number | null; classroomId?: number | null; search?: string }): any[] {
+function getStudentsTable({ schoolId, classroomId, search }: { schoolId?: number | null; classroomId?: number | null; search?: string }): { id: number; name: string; classroomId: number; avgScore: number; attempts: number; minutes: number; hours: number }[] {
   let rows = DATA.students.filter(st => (!schoolId || st.schoolId === schoolId) && (!classroomId || st.classroomId === classroomId));
   if (search) {
     const q = search.trim();
@@ -341,7 +341,7 @@ function getStudentsTable({ schoolId, classroomId, search }: { schoolId?: number
   });
 }
 
-function getStudentDetail(studentId: number): { subjectRows: any[]; activityRows: any[] } {
+function getStudentDetail(studentId: number): { subjectRows: { subject: string; avgScore: number; attempts: number }[]; activityRows: { activity: string; avgScore: number; attempts: number }[] } {
   const sc = DATA.scores.filter(s => s.studentId === studentId);
   const bySubject: { [id: number]: { subject: string; scores: number[] } } = {};
   sc.forEach((s: Score) => {
@@ -386,12 +386,12 @@ function Stat({ label, value, sub }: StatProps) {
 type DataTableColumn = {
   key: string;
   label: string;
-  render?: (value: any, row: any) => React.ReactNode;
+  render?: (value: unknown, row: Record<string, unknown>) => React.ReactNode;
 };
 
 type DataTableProps = {
   columns: DataTableColumn[];
-  rows: any[];
+  rows: Record<string, unknown>[];
 };
 
 function DataTable({ columns, rows }: DataTableProps) {
@@ -406,10 +406,10 @@ function DataTable({ columns, rows }: DataTableProps) {
           </tr>
         </thead>
         <tbody>
-          {rows.map((r: any, i: number) => (
+          {rows.map((r: Record<string, unknown>, i: number) => (
             <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-blue-50/60"}>
               {columns.map((col: DataTableColumn) => (
-                <td key={col.key} className="px-3 py-2 whitespace-nowrap text-pink-700 font-medium">{col.render ? col.render(r[col.key], r) : r[col.key]}</td>
+                <td key={col.key} className="px-3 py-2 whitespace-nowrap text-pink-700 font-medium">{col.render ? col.render(r[col.key], r) : String(r[col.key] ?? '')}</td>
               ))}
             </tr>
           ))}
@@ -424,7 +424,7 @@ export default function SmartClassroomDashboard() {
   const [schoolId, setSchoolId] = useState(1);
   const [classroomId, setClassroomId] = useState<number | null>(null);
   const [search, setSearch] = useState("");
-  const [selectedStudentId, setSelectedStudentId] = useState(null);
+  const [selectedStudentId, setSelectedStudentId] = useState<number | null>(null);
 
   // --- Derived options ---
   const schoolOptions = SCHOOL_DEFS.map(s => ({ value: s.id, label: s.name }));
