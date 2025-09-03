@@ -417,7 +417,7 @@ function DataTable({ columns, rows }: DataTableProps) {
           {rows.map((r: Record<string, unknown>, i: number) => (
             <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-blue-50/60"}>
               {columns.map((col: DataTableColumn) => (
-                <td key={col.key} className="px-3 py-2 whitespace-nowrap text-pink-700 font-medium">{col.render ? col.render(r[col.key], r) : (React.isValidElement(r[col.key]) ? r[col.key] : String(r[col.key] ?? ''))}</td>
+                <td key={col.key} className="px-3 py-2 whitespace-nowrap text-pink-700 font-medium">{col.render ? col.render(r[col.key], r) : (React.isValidElement(r[col.key]) ? r[col.key] as React.ReactNode : String(r[col.key] ?? ''))}</td>
               ))}
             </tr>
           ))}
