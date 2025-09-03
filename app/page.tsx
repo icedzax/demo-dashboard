@@ -122,34 +122,42 @@ const ACTIVITIES = [
 // 2) School & Classroom Structure
 // ---------------------------
 const SCHOOL_DEFS = [
-  { id: 1, name: "โรงเรียนอนุบาลสาธิตบางแก้ว ๑ (วัดหนามแดง)", classrooms: [
-    { id: 1, level: "อนุบาล 1", room: "1" },
-    { id: 2, level: "อนุบาล 1", room: "2" },
-    { id: 3, level: "อนุบาล 2", room: "1" },
-    { id: 4, level: "อนุบาล 2", room: "2" },
-    { id: 5, level: "อนุบาล 3", room: "1" },
-    { id: 6, level: "อนุบาล 3", room: "2" },
-  ]},
-  { id: 2, name: "โรงเรียนอนุบาลสาธิตบางแก้ว ๒ (สมุทรสิริวัฒน์)", classrooms: [
-    { id: 7, level: "อนุบาล 1", room: "1" },
-    { id: 8, level: "อนุบาล 1", room: "2" },
-    { id: 9, level: "อนุบาล 2", room: "1" },
-    { id: 10, level: "อนุบาล 2", room: "2" },
-    { id: 11, level: "อนุบาล 3", room: "1" },
-    { id: 12, level: "อนุบาล 3", room: "2" },
-    { id: 13, level: "อนุบาล 3", room: "3" },
-    { id: 14, level: "อนุบาล 3", room: "4" },
-  ]},
-  { id: 3, name: "โรงเรียนอนุบาลสาธิตบางแก้ว ๓ (ไทยสมุทร)", classrooms: [
-    { id: 15, level: "อนุบาล 1", room: "1" },
-    { id: 16, level: "อนุบาล 2", room: "1" },
-    { id: 17, level: "อนุบาล 3", room: "1" },
-  ]},
-  { id: 4, name: "โรงเรียนอนุบาลสาธิตบางแก้ว ๔ (เปรมฤทัย)", classrooms: [
-    { id: 18, level: "อนุบาล 1", room: "1" },
-    { id: 19, level: "อนุบาล 2", room: "1" },
-    { id: 20, level: "อนุบาล 3", room: "1" },
-  ]},
+  {
+    id: 1, name: "โรงเรียนอนุบาลสาธิตบางแก้ว ๑ (วัดหนามแดง)", classrooms: [
+      { id: 1, level: "อนุบาล 1", room: "1" },
+      { id: 2, level: "อนุบาล 1", room: "2" },
+      { id: 3, level: "อนุบาล 2", room: "1" },
+      { id: 4, level: "อนุบาล 2", room: "2" },
+      { id: 5, level: "อนุบาล 3", room: "1" },
+      { id: 6, level: "อนุบาล 3", room: "2" },
+    ]
+  },
+  {
+    id: 2, name: "โรงเรียนอนุบาลสาธิตบางแก้ว ๒ (สมุทรสิริวัฒน์)", classrooms: [
+      { id: 7, level: "อนุบาล 1", room: "1" },
+      { id: 8, level: "อนุบาล 1", room: "2" },
+      { id: 9, level: "อนุบาล 2", room: "1" },
+      { id: 10, level: "อนุบาล 2", room: "2" },
+      { id: 11, level: "อนุบาล 3", room: "1" },
+      { id: 12, level: "อนุบาล 3", room: "2" },
+      { id: 13, level: "อนุบาล 3", room: "3" },
+      { id: 14, level: "อนุบาล 3", room: "4" },
+    ]
+  },
+  {
+    id: 3, name: "โรงเรียนอนุบาลสาธิตบางแก้ว ๓ (ไทยสมุทร)", classrooms: [
+      { id: 15, level: "อนุบาล 1", room: "1" },
+      { id: 16, level: "อนุบาล 2", room: "1" },
+      { id: 17, level: "อนุบาล 3", room: "1" },
+    ]
+  },
+  {
+    id: 4, name: "โรงเรียนอนุบาลสาธิตบางแก้ว ๔ (เปรมฤทัย)", classrooms: [
+      { id: 18, level: "อนุบาล 1", room: "1" },
+      { id: 19, level: "อนุบาล 2", room: "1" },
+      { id: 20, level: "อนุบาล 3", room: "1" },
+    ]
+  },
 ];
 
 // ---------------------------
@@ -299,7 +307,7 @@ function getSubjectsSummary({ schoolId, classroomId }: { schoolId?: number; clas
       avgScore: +average(sc.map(x => x.score)).toFixed(1),
       attempts: sc.length,
     };
-  }).sort((a,b) => b.minutes - a.minutes);
+  }).sort((a, b) => b.minutes - a.minutes);
 }
 
 function getClassroomsSummary(schoolId: number): { classroomId: number; name: string; students: number; minutes: number; hours: number; avgScore: number }[] {
@@ -317,7 +325,7 @@ function getClassroomsSummary(schoolId: number): { classroomId: number; name: st
       hours: +(minutes / 60).toFixed(1),
       avgScore: +average(sc.map(x => x.score)).toFixed(1),
     };
-  }).sort((a,b) => b.minutes - a.minutes);
+  }).sort((a, b) => b.minutes - a.minutes);
 }
 
 function getStudentsTable({ schoolId, classroomId, search }: { schoolId?: number | null; classroomId?: number | null; search?: string }): { id: number; name: string; classroomId: number; avgScore: number; attempts: number; minutes: number; hours: number }[] {
@@ -409,7 +417,7 @@ function DataTable({ columns, rows }: DataTableProps) {
           {rows.map((r: Record<string, unknown>, i: number) => (
             <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-blue-50/60"}>
               {columns.map((col: DataTableColumn) => (
-                <td key={col.key} className="px-3 py-2 whitespace-nowrap text-pink-700 font-medium">{col.render ? col.render(r[col.key], r) : String(r[col.key] ?? '')}</td>
+                <td key={col.key} className="px-3 py-2 whitespace-nowrap text-pink-700 font-medium">{col.render ? col.render(r[col.key], r) : (React.isValidElement(r[col.key]) ? r[col.key] : String(r[col.key] ?? ''))}</td>
               ))}
             </tr>
           ))}
@@ -494,7 +502,7 @@ export default function SmartClassroomDashboard() {
       {/* Top Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Stat label="โรงเรียนทั้งหมด" value={SCHOOL_DEFS.length} />
-        <Stat label="ห้องเรียนทั้งหมด" value={SCHOOL_DEFS.reduce((a,s)=>a+s.classrooms.length,0)} />
+        <Stat label="ห้องเรียนทั้งหมด" value={SCHOOL_DEFS.reduce((a, s) => a + s.classrooms.length, 0)} />
         <Stat label="จำนวนนักเรียน" value={totalStudents} />
         <Stat label="ชั่วโมงเรียนรวม" value={`${totalHours} ชม.`} sub={`คะแนนเฉลี่ยระบบ ${overallAvg}%`} />
       </div>
@@ -740,9 +748,11 @@ export default function SmartClassroomDashboard() {
                   { key: "avgScore", label: "คะแนนเฉลี่ย" },
                   { key: "attempts", label: "ครั้ง" },
                 ]}
-                rows={studentsRows.filter(r => r.classroomId === classroomId).map(r => ({ ...r, name: (
-                  <button className="underline" onClick={() => setSelectedStudentId(r.id)}>{r.name}</button>
-                ) }))}
+                rows={studentsRows.filter(r => r.classroomId === classroomId).map(r => ({
+                  ...r, name: (
+                    <button className="underline" onClick={() => setSelectedStudentId(r.id)}>{r.name}</button>
+                  )
+                }))}
               />
               {selectedStudentId && (
                 <div className="space-y-4">
